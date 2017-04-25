@@ -1,6 +1,7 @@
 module.exports = {
   entry: './addPost.tsx',
   output: { filename: 'addPost.js' },
+  target: "web",
   module: {
     rules: [
       {
