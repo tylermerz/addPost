@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {DefaultLayout} from '../../../personalWebsite/views/layouts/default';
 var MarkdownIt = require('markdown-it');
+var hljs = require('highlight.js');
 
 class InputBox extends React.Component<any, any> {
     state: Object;
@@ -138,7 +139,18 @@ class ResultBox extends React.Component<any, any> {
     constructor(props: Object) {
         super(props);
         this.state={Result: ""};
+        this.componentDidUpdate = this.componentDidUpdate.bind(this);        
     };
+    componentDidUpdate() {
+        var preBlock = ReactDOM.findDOMNode(this).getElementsByTagName("pre");
+        for (var j = 0; j< preBlock.length;j++){
+            let pB = preBlock[j].getElementsByTagName("code");
+            for (var i = 0; i <pB.length; i++){
+                let codeBlock = pB[i];
+                hljs.highlightBlock(codeBlock);
+            };
+        };
+    }
     render() {
         return (
             <DefaultLayout title="test">
@@ -295,12 +307,9 @@ export class FormContainer extends React.Component<any, any> {
         event.preventDefault();
         let loadedDataJSON = localStorage[this.refs['vName'].value];
         let loadedState = JSON.parse(loadedDataJSON);
-        console.log(loadedState)
         for (var key in loadedState){
             this.setState({[key]:loadedState[key]});
         }
-        console.log({childTags:loadedState["childTags"]})
-        console.log(this.state["childTags"]);
     }
 
     save(event){
