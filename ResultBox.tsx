@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {DefaultLayout} from '../../../personalWebsite/views/layouts/default';
 var hljs = require('highlight.js');
-export class ResultBox extends React.Component<any, any> {
+export default class ResultBox extends React.Component<any, any> {
     state: Object;
     props: Object;
     constructor(props: Object) {

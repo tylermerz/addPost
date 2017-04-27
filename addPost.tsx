@@ -1,13 +1,15 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {PosterResultBox} from './PosterResultBox';
-import {DateInputBox} from './DateInputBox';
-import {TitleInputBox} from './TitleInputBox';
-import {InputBox} from './InputBox';
-import {TagsInputBox} from './TagsInputBox';
-import {SummaryInputBox} from './SummaryInputBox';
-import {ResultBox} from './ResultBox';
-import {ExtrasInputBox} from './ExtrasInputBox';
+import PosterResultBox from './PosterResultBox';
+import DateInputBox from './DateInputBox';
+import TitleInputBox from './TitleInputBox';
+import InputBox from './InputBox';
+import TagsInputBox from './TagsInputBox';
+import SummaryInputBox from './SummaryInputBox';
+import ResultBox from './ResultBox';
+import ExtrasInputBox from './ExtrasInputBox';
+import autoSummarizer from './autoSummarizer';
+var removeMd = require('remove-markdown');
 var MarkdownIt = require('markdown-it');
 
 
@@ -15,6 +17,7 @@ export class FormContainer extends React.Component<any, any> {
 
     props: Object;
     state: Object;
+    md: any;
 
     constructor(props: Object) {
         super(props);
@@ -30,6 +33,7 @@ export class FormContainer extends React.Component<any, any> {
             childUID: 0,
             childTags: [""]
         };
+        this.md = new MarkdownIt({ html: true, typographer: true });
         this.calculateSummary = this.calculateSummary.bind(this);
         this.calculatePreview= this.calculatePreview.bind(this);
         this.clickToCancel = this.clickToCancel.bind(this);
@@ -75,38 +79,19 @@ export class FormContainer extends React.Component<any, any> {
     };*/
     calculatePreview(event) {
         event.preventDefault();
-
-        let md = new MarkdownIt({ html: true, typographer: true });
-
-        let post = md.render(this.state["childPost"]);
+        let post = this.md.render(this.state["childPost"]);
         this.refs.preview.setState({ Result: post });
     }
     calculateSummary(event) {
         event.preventDefault();
-        let summary: string = "";
+        let htmlFragment = document.createDocumentFragment(); 
+        let htmlDiv = document.createElement("div");
+        let htmlString = this.md.render(this.state["childPost"]);
+        htmlDiv.innerHTML = htmlString;
+        htmlFragment.appendChild(htmlDiv);
 
-        //take the first paragraph of the post body
-        summary = this.state.childPost.split('</p>')[0] + "</p>";
-
-        //find the first image
-        let tagSearchList = [[new RegExp("<img"), new RegExp("/>")],
-        [new RegExp("<div\\s*class\\s*=\\s*(\"|\')chart(\"|\')"), new RegExp("</script>")],
-        [new RegExp("<pre>\\s*<code"), new RegExp("</pre>")]];
-
-        let tagSearchResults: Array<Object> = tagSearchList.map((tagPair) => {
-            let openingTagPos = this.state.childPost.search(tagPair[0]);
-            let closingTagPos = this.state.childPost.search(tagPair[1]);
-
-            return {
-                startingPos: openingTagPos,
-                slicedString: this.state.childPost.slice(openingTagPos, closingTagPos + tagPair[1].toString().length - 3)
-            };
-        });
-
-        tagSearchResults.sort((a, b) => { return (a.startingPos - b.startingPos) });
-
-
-        summary = summary + tagSearchResults[0]["slicedString"];
+        let summarizer = new autoSummarizer(htmlFragment);
+        let summary = summarizer.summarize();
         this.setState({ childSummary: summary });
     }
     clickToCancel(event) {

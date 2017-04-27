@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {InputBox} from './InputBox';
-export class DateInputBox extends InputBox {
+import InputBox from './InputBox';
+export default class DateInputBox extends InputBox {
     state: Object;
     props: Object;
 

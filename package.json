@@ -13,8 +13,10 @@
     "browserify-fs": "^1.0.0",
     "highlight.js": "^9.11.0",
     "markdown-it": "^8.3.1",
+    "natural": "^0.5.1",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
+    "remove-markdown": "^0.1.0",
     "ts-loader": "^2.0.3",
     "webpack": "^2.4.1"
   }

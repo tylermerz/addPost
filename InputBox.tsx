@@ -1,5 +1,5 @@
 import * as React from 'react';
-export class InputBox extends React.Component<any, any> {
+export default class InputBox extends React.Component<any, any> {
     state: Object;
     props: Object;
     constructor(props: Object) {

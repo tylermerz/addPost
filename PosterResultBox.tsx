@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {ResultBox} from './ResultBox';
-export class PosterResultBox extends ResultBox {
+import ResultBox from './ResultBox';
+export default class PosterResultBox extends ResultBox {
 
     props: Object;
 

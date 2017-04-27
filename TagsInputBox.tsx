@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {InputBox} from './InputBox';
-export class TagsInputBox extends InputBox {
+import InputBox from './InputBox';
+export default class TagsInputBox extends InputBox {
     state: Object;
     props: Object;
     constructor(props: Object) {
