@@ -1,204 +1,14 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {DefaultLayout} from '../../../personalWebsite/views/layouts/default';
+import {PosterResultBox} from './PosterResultBox';
+import {DateInputBox} from './DateInputBox';
+import {TitleInputBox} from './TitleInputBox';
+import {InputBox} from './InputBox';
+import {TagsInputBox} from './TagsInputBox';
+import {SummaryInputBox} from './SummaryInputBox';
+import {ResultBox} from './ResultBox';
+import {ExtrasInputBox} from './ExtrasInputBox';
 var MarkdownIt = require('markdown-it');
-var hljs = require('highlight.js');
-
-class InputBox extends React.Component<any, any> {
-    state: Object;
-    props: Object;
-    constructor(props: Object) {
-        super(props);
-        this.state = {};
-        this.onChange = this.onChange.bind(this);
-    };
-
-    onChange(event) {
-        this.props.onChange(this.refs.childValue.value);
-
-    }
-
-    render() {
-        return (
-            <div>
-                <h2> {this.props.type} </h2>
-                <textarea onChange={this.onChange} ref="childValue" rows={30} cols={100} name={this.props.type} value={this.props.data} />
-            </div>
-        );
-    }
-};
-
-
-class SummaryInputBox extends InputBox {
-    state: Object;
-    props: Object;
-
-    constructor(props: Object) {
-        super(props);
-        this.onChange = this.onChange.bind(this);
-
-    };
-    onChange(event) {
-        this.props.onChange(this.refs.childValue.value);
-    }
-
-    render() {
-        return (
-            <div>
-                <h2> {this.props.type} </h2>
-                <textarea value={this.props.data} onChange={this.onChange} ref="childValue" rows={10} cols={100} name={this.props.type} value={this.props.val} />
-            </div>
-        );
-    }
-};
-
-class ExtrasInputBox extends InputBox {
-    state: Object;
-    props: Object;
-
-    constructor(props: Object) {
-        super(props);
-        this.state = {};
-    };
-
-
-    render() {
-        return (
-            <div>
-                <h2> {this.props.type} </h2>
-                <textarea value={this.props.data} onChange={this.onChange} ref="childValue" rows={3} cols={100} name={this.props.type} />
-            </div>
-        );
-    }
-};
-
-class TagsInputBox extends InputBox {
-    state: Object;
-    props: Object;
-    constructor(props: Object) {
-        super(props);
-        this.state={};
-    };
-
-    onChange(event) {
-        this.props.onChange(this.refs.childValue.value.split(","));
-    }
-
-    render() {
-        return (
-            <div>
-                <h2> {this.props.type} </h2>
-                <textarea value={this.props.data} onChange={this.onChange} ref="childValue" rows={3} cols={100} name={this.props.type} />
-            </div>
-        );
-    }
-};
-
-class TitleInputBox extends InputBox {
-    state: Object;
-    props: Object;
-
-    constructor(props: Object) {
-        super(props);
-    };
-
-    render() {
-        return (
-            <div>
-                <h2> {this.props.type} </h2>
-                <input value={this.props.data} onChange={this.onChange} ref="childValue" size={100} name={this.props.type} />
-            </div>
-        );
-    }
-};
-
-
-class DateInputBox extends InputBox {
-    state: Object;
-    props: Object;
-
-    constructor(props: Object) {
-        super(props);
-    };
-
-    render() {
-        return (
-            <div>
-                <h2> {this.props.type} </h2>
-                <input value={this.props.data} onChange={this.onChange} ref="childValue" type="datetime" size={100} name={this.props.type} />
-            </div>
-        );
-    }
-};
-
-
-
-class ResultBox extends React.Component<any, any> {
-    state: Object;
-    props: Object;
-    constructor(props: Object) {
-        super(props);
-        this.state={Result: ""};
-        this.componentDidUpdate = this.componentDidUpdate.bind(this);        
-    };
-    componentDidUpdate() {
-        var preBlock = ReactDOM.findDOMNode(this).getElementsByTagName("pre");
-        for (var j = 0; j< preBlock.length;j++){
-            let pB = preBlock[j].getElementsByTagName("code");
-            for (var i = 0; i <pB.length; i++){
-                let codeBlock = pB[i];
-                hljs.highlightBlock(codeBlock);
-            };
-        };
-    }
-    render() {
-        return (
-            <DefaultLayout title="test">
-                <div className='mainBody'>
-                    <div className='postMeat'>
-                        <div className='postBody'>
-                            <hr />
-                            <div dangerouslySetInnerHTML={{ __html: this.state["Result"] }} />
-                        </div>
-                    </div>
-                </div>
-            </DefaultLayout>
-        );
-    }
-};
-
-
-class PosterResultBox extends ResultBox {
-
-    props: Object;
-
-    constructor(props: Object) {
-        super(props);
-        this.state = {
-            username: "",
-            email: ""
-        };
-    };
-
-    componentDidMount() {
-        this.props.onChange(0);
-        //get the username from databa
-        this.setState({
-            username: "tmerz",
-            email: "tyler.merz@gmail.com"
-        });
-
-    }
-    render() {
-        return (
-            <div>
-                <h2> {this.props.type} </h2>
-                {this.state.username} ({this.state.email})
-            </div>
-        );
-    }
-};
-
 
 
 export class FormContainer extends React.Component<any, any> {
@@ -310,6 +120,8 @@ export class FormContainer extends React.Component<any, any> {
         for (var key in loadedState){
             this.setState({[key]:loadedState[key]});
         }
+        console.log({childTags:loadedState["childTags"]})
+        console.log(this.state["childTags"]);
     }
 
     save(event){
