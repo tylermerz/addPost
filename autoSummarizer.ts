@@ -1,7 +1,7 @@
 /**Takes in an HTMLTemplateElement and tries to calculate an automatic summary of the text.
  * Method based on https://thetokenizer.com/2013/04/28/build-your-own-summary-tool/
  */
-
+let stopWordsArray = require("./stopWords.json");
 export default class autoSummarizer{
     version:string;
     versionLink:string;
@@ -16,7 +16,8 @@ export default class autoSummarizer{
         this.originalText = ogText;
         this.numSentences = 0;
         this.version = "1.0";
-        this.versionLink = "";
+        this.versionLink = "https://github.com/tylermerz/addPost/blob/master/autoSummarizer.ts";
+        console.log(stopWordsArray);
     }
 
     summarize():string{
@@ -34,7 +35,7 @@ export default class autoSummarizer{
         let textParagraphs = this.originalText.firstElementChild.getElementsByTagName("p");
         for (var i =0;i< textParagraphs.length;i++){
             let sentences = textParagraphs[i].innerText.split(/[.!?] /);
-            nthis.paragraphsHTML.push(textParagraphs[i].innerHTML.split(/[.!?] /));
+            this.paragraphsHTML.push(textParagraphs[i].innerHTML.split(/[.!?] /));
             this.paragraphs.push(sentences);
             this.sentenceArray = this.sentenceArray.concat(sentences);
             this.numSentences+=sentences.length;
@@ -79,7 +80,7 @@ export default class autoSummarizer{
             console.log(bestScore)
             let overallBestScore = Math.max(...bestScore);
             let bestSentenceIndex = bestScore.findIndex((score)=>{return score===overallBestScore});
-            let bestSenence = this.paragraphsHTML[paragraphNum][bestSentenceIndex];
+            let bestSenence = this.paragraphsHTML[paragraphNum][bestSentenceIndex];//add the HTML version 
             console.log(bestSentenceIndex)
             console.log(bestSenence)
             this.summary=this.summary+bestSenence+" ";

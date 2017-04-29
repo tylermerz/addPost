@@ -1,3 +1,4 @@
+//taken from http://xpo6.com/list-of-english-stop-words/
 [
 	"a",
 	"about",
@@ -124,9 +125,9 @@
 	"herein",
 	"hereupon",
 	"hers",
-	"herse"",
+	"herse",
 	"him",
-	"himse"",
+	"himself",
 	"his",
 	"how",
 	"however",
@@ -142,7 +143,7 @@
 	"is",
 	"it",
 	"its",
-	"itse"",
+	"itself",
 	"keep",
 	"last",
 	"latter",
@@ -166,7 +167,7 @@
 	"much",
 	"must",
 	"my",
-	"myse"",
+	"myself",
 	"name",
 	"namely",
 	"neither",
@@ -317,5 +318,5 @@
 	"your",
 	"yours",
 	"yourself",
-	"yourselves",
+	"yourselves"
 ]
