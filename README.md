@@ -3,7 +3,7 @@ This is a Typescript project that I use to help compose, save, and summarize blo
 
 ## Installation and Usage
 ### Installation
-To install this project just clone it from the repo and then use npm to install it. I have implicitly included a reference to the styling file that I use for my [personalWebsite](https://github.com/tylermerz/personalWebsite) (`views/layouts/edefault.tsx`) to allow for previews in the browser, so change this to whatever your website style requires.
+To install this project just clone it from the repo and then use npm to install it. I have implicitly included a reference to the styling file that I use for my [personalWebsite](https://github.com/tylermerz/personalWebsite) (`views/layouts/default.tsx`) to allow for previews in the browser, so change this to whatever your website style requires.
 
 ~~~bash
 git clone https://github.com/tylermerz/addPost.git
