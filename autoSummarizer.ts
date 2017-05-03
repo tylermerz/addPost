@@ -28,7 +28,6 @@ export default class autoSummarizer{
         this.compileTextSummary();
         this.compileFigureSummary();
 
-        this.watermarkSummary();
         return this.summary;
     }
     splitParagraphKeepPunctuation(s1:string){
@@ -109,7 +108,8 @@ export default class autoSummarizer{
             firstSentence+=paragraph.length;
         });
 
-        this.summary = this.summary.trim() +"</p>";
+        this.summary = this.summary.trim();
+        this.watermarkSummary();
     }
 
     compileFigureSummary(){
@@ -119,6 +119,6 @@ export default class autoSummarizer{
         this.summary = this.summary+"<figure>" + figures[0].innerHTML+"</figure>";
     }
     watermarkSummary(){
-        this.summary = this.summary + "<p><em>Summarized by <a href='"+this.versionLink+"'>autoSummarizer "+this.version+"</a></em></p>";
+        this.summary = this.summary + "<em> (Summarized by <a href='"+this.versionLink+"'>autoSummarizer "+this.version+"</a></em>)</p>";
     }
 }

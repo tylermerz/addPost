@@ -9,6 +9,7 @@ import SummaryInputBox from './SummaryInputBox';
 import ResultBox from './ResultBox';
 import ExtrasInputBox from './ExtrasInputBox';
 import autoSummarizer from './autoSummarizer';
+import autoTagger from './autoTagger';
 var removeMd = require('remove-markdown');
 var MarkdownIt = require('markdown-it');
 
@@ -35,6 +36,7 @@ export class FormContainer extends React.Component<any, any> {
         };
         this.md = new MarkdownIt({ html: true, typographer: true });
         this.calculateSummary = this.calculateSummary.bind(this);
+        this.calculateTags= this.calculateTags.bind(this);
         this.calculatePreview= this.calculatePreview.bind(this);
         this.clickToCancel = this.clickToCancel.bind(this);
         this.save= this.save.bind(this);
@@ -94,6 +96,19 @@ export class FormContainer extends React.Component<any, any> {
         let summary = summarizer.summarize();
         this.setState({ childSummary: summary });
     }
+    calculateTags(event) {
+        event.preventDefault();
+        let htmlFragment = document.createDocumentFragment(); 
+        let htmlDiv = document.createElement("div");
+        let htmlString = this.md.render(this.state["childPost"]);
+        htmlDiv.innerHTML = htmlString;
+        htmlFragment.appendChild(htmlDiv);
+
+        let AT= new autoTagger(htmlFragment);
+        let tags  =AT.autoTag();
+        this.setState({ childTags: tags });
+    }
+
     clickToCancel(event) {
         this.setState({ display: false });
     }
@@ -127,6 +142,7 @@ export class FormContainer extends React.Component<any, any> {
                             <TitleInputBox data={this.state['childTitle']} onChange={(value => this.setState({ childTitle: value }))} type="title" />
                             <InputBox data={this.state["childPost"]} onChange={(value => this.setState({ childPost: value }))} type="post" />
                             <TagsInputBox data={this.state['childTags']} onChange={(value => this.setState({ childTags: value }))} type="tags" />
+                            <button onClick={this.calculateTags}>Calculate Tags</button>
                             <ExtrasInputBox data={this.state['childExtras']} onChange={(value => this.setState({ childExtras: value }))} type="extras" />
                             <button onClick={this.calculateSummary}>Calculate Summary</button>
                             <button onClick={this.calculatePreview}>Calculate Preview</button>
