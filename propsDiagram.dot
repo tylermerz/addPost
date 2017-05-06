@@ -1,0 +1,26 @@
+digraph{
+	graph [
+		rankdir = "LR"
+	];
+	methods [shape=record label="methods|<f1> this.setState( &#123; childTitle: value &#125; )|<f2> this.setState( &#123; childDate: value &#125; )| <f3> ..."];
+	state [shape=record label="state|<f1> childTitle|<f2> childDate|<f3> ..."];
+	subgraph cluster_addPost{
+		methods; state;
+		label="addPost";
+		graph[style=solid, color=blue];
+	};
+	title [shape=box;label=<TitleInputBox>];
+	date [shape=box;label=<DateInputBox>];
+	cont [shape=box;label=<...>];
+	title->state:f1;
+	date->state:f2;
+	cont->state:f3;
+	subgraph cluster_children{
+		title;date;cont;
+		label = "children";
+		graph[style=dashed, color=red];
+	};
+	methods:f1->title;
+	methods:f2->date;
+	methods:f3->cont;
+}
