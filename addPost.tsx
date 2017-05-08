@@ -41,7 +41,13 @@ export class FormContainer extends React.Component<any, any> {
         this.clickToCancel = this.clickToCancel.bind(this);
         this.save= this.save.bind(this);
         this.load = this.load.bind(this);
+        this.componentDidMount = this.componentDidMount.bind(this);
     };
+    componentDidMount(){
+        window.setInterval(()=>{
+            this.calculatePreview(null);
+        }, 5000);
+    }
 
     /*submitForm(event) {
         event.preventDefault();
@@ -79,8 +85,7 @@ export class FormContainer extends React.Component<any, any> {
             }
         });
     };*/
-    calculatePreview(event) {
-        event.preventDefault();
+    calculatePreview() {
         let post = this.md.render(this.state["childPost"]);
         this.refs.preview.setState({ Result: post });
     }
@@ -145,7 +150,6 @@ export class FormContainer extends React.Component<any, any> {
                             <button onClick={this.calculateTags}>Calculate Tags</button>
                             <ExtrasInputBox data={this.state['childExtras']} onChange={(value => this.setState({ childExtras: value }))} type="extras" />
                             <button onClick={this.calculateSummary}>Calculate Summary</button>
-                            <button onClick={this.calculatePreview}>Calculate Preview</button>
                             <SummaryInputBox data={this.state['childSummary']} onChange={(value => this.setState({ childSummary: value }))} val={this.state.childSummary} type="summary" />
                             <input defaultValue="test" type='text' ref='vName' id='vName' /><button onClick={this.load}>Load</button><button onClick={this.save}>Save</button><br />
                             <button type="submit">Submit</button>

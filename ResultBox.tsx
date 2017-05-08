@@ -23,7 +23,7 @@ export default class ResultBox extends React.Component<any, any> {
     render() {
         return (
             <DefaultLayout title="test">
-                <div className='mainBody'>
+                <div className='mainBody' >
                     <div className='postMeat'>
                         <div className='postBody'>
                             <hr />
