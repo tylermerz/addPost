@@ -10,6 +10,7 @@ import ResultBox from './ResultBox';
 import ExtrasInputBox from './ExtrasInputBox';
 import autoSummarizer from './autoSummarizer';
 import autoTagger from './autoTagger';
+var mousetrap = require('mousetrap');
 var removeMd = require('remove-markdown');
 var MarkdownIt = require('markdown-it');
 
@@ -47,6 +48,7 @@ export class FormContainer extends React.Component<any, any> {
         window.setInterval(()=>{
             this.calculatePreview(null);
         }, 5000);
+        mousetrap.bind('command+s',(event)=>{this.save(event)});
     }
 
     /*submitForm(event) {
