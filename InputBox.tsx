@@ -17,7 +17,7 @@ export default class InputBox extends React.Component<any, any> {
         return (
             <div>
                 <h2> {this.props.type} </h2>
-                <textarea onChange={this.onChange} ref="childValue" rows={30} cols={100} name={this.props.type} value={this.props.data} />
+                <textarea className="mousetrap" onChange={this.onChange} ref="childValue" rows={30} cols={100} name={this.props.type} value={this.props.data} />
             </div>
         );
     }

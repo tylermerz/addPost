@@ -23,11 +23,11 @@ export default class ResultBox extends React.Component<any, any> {
     render() {
         return (
             <DefaultLayout title="test">
-                <div className='mainBody' >
+                <div className='mainBody' style={{height:'700px',overflow:'auto'}} >
                     <div className='postMeat'>
                         <div className='postBody'>
                             <hr />
-                            <div dangerouslySetInnerHTML={{ __html: this.state["Result"] }} />
+                            <div dangerouslySetInnerHTML={{ __html: this.state["Result"]}} />
                         </div>
                     </div>
                 </div>

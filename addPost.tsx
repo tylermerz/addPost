@@ -13,6 +13,7 @@ import autoTagger from './autoTagger';
 var mousetrap = require('mousetrap');
 var removeMd = require('remove-markdown');
 var MarkdownIt = require('markdown-it');
+var escape = require('html-escape');
 
 
 export class FormContainer extends React.Component<any, any> {
@@ -43,50 +44,33 @@ export class FormContainer extends React.Component<any, any> {
         this.save= this.save.bind(this);
         this.load = this.load.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
+        this.submitForm = this.submitForm.bind(this);
+        this.generateOutputString = this.generateOutputString.bind(this);
     };
     componentDidMount(){
         window.setInterval(()=>{
             this.calculatePreview(null);
         }, 5000);
-        mousetrap.bind('command+s',(event)=>{this.save(event)});
+        mousetrap.bind('command+s',(event)=>{
+            this.save(event)
+            return false;
+        });
     }
-
-    /*submitForm(event) {
+    generateOutputString():string{
+        let time = this.state["childDate"].toString();
+        let title = this.state["childTitle"]
+        let posterid = 0;
+        let postbody = this.md.render(this.state["childPost"]);
+        let postsummary = this.state["childSummary"]
+        let output = "INSERT INTO posts ('time','title','posterid','postbody','postsummary') VALUES ('"+time+"','"+title+"','"+posterid+"','"+postbody+"','"+postsummary+"')"
+        return output;
+    }
+    submitForm(event){
         event.preventDefault();
-        document.getElementById('heading').scrollIntoView();
-        this.setState({
-            submitted: true,
-            notification: ""
-        });
-        let authToken = cookie.load("auth");
-        let myInit = {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + authToken
-            },
-            body: JSON.stringify({
-                date: this.state.childDate,
-                title: this.state.childTitle,
-                summary: this.state.childSummary,
-                extras: this.state.childExtras,
-                post: this.state.childPost,
-                id: this.state.childUID,
-                tags: this.state.childTags
-            })
-        };
-
-        fetch("https://localhost:3000/postAdd", myInit).then(response => {
-
-            console.log(response.status);
-            if (response.status == 401) {
-                this.setState({ notification: "Connection to update database refused." });
-            } else if (response.status == 200) {
-                this.setState({ notification: "Connection to update database accepted." });
-            }
-        });
-    };*/
+        let output = this.generateOutputString();
+        console.log(output);
+    }
+ 
     calculatePreview() {
         let post = this.md.render(this.state["childPost"]);
         this.refs.preview.setState({ Result: post });
@@ -134,7 +118,7 @@ export class FormContainer extends React.Component<any, any> {
     save(event){
         event.preventDefault();
         localStorage[this.refs['vName'].value]=JSON.stringify(this.state);
-        console.log(localStorage[this.refs['vName'].value])
+        console.log(localStorage[this.refs['vName'].value]);
     }
     render() {
         return (
@@ -154,10 +138,10 @@ export class FormContainer extends React.Component<any, any> {
                             <button onClick={this.calculateSummary}>Calculate Summary</button>
                             <SummaryInputBox data={this.state['childSummary']} onChange={(value => this.setState({ childSummary: value }))} val={this.state.childSummary} type="summary" />
                             <input defaultValue="test" type='text' ref='vName' id='vName' /><button onClick={this.load}>Load</button><button onClick={this.save}>Save</button><br />
-                            <button type="submit">Submit</button>
+                            <button type="submit">Show Postgres Code</button>
                         </form>
                     </td>
-                    <td><ResultBox ref="preview" type="preview" /></td>
+                    <td><ResultBox  ref="preview" type="preview" /></td>
                 </tr>
             </table>
         );
