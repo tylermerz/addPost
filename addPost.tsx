@@ -27,7 +27,7 @@ export class FormContainer extends React.Component<any, any> {
         this.state = {
             display: true,
             submitted: false,
-            childDate: new Date().toString(),
+            childDate: new Date().toUTCString(),
             childTitle: "",
             childSummary: "",
             calculatedChildSummary: "",
@@ -57,12 +57,18 @@ export class FormContainer extends React.Component<any, any> {
         });
     }
     generateOutputString():string{
-        let time = this.state["childDate"].toString();
-        let title = this.state["childTitle"]
+        let time = this.state["childDate"];
+        let title = this.state["childTitle"].replace(/'/g,"''")
         let posterid = 0;
-        let postbody = this.md.render(this.state["childPost"]);
-        let postsummary = this.state["childSummary"]
-        let output = "INSERT INTO posts ('time','title','posterid','postbody','postsummary') VALUES ('"+time+"','"+title+"','"+posterid+"','"+postbody+"','"+postsummary+"')"
+        let postID = this.state["childPostID"];
+        let postbody = this.md.render(this.state["childPost"]).replace(/'/g,"''");//escape single quotes for SQL query
+        let postsummary = this.state["childSummary"].replace(/'/g,"''");
+        //code for post table insert
+        let output = "INSERT INTO posts (id,time,title,posterid,postbody,postsummary) VALUES ("+postID.toString()+",'"+time+"','"+title+"','"+posterid+"','"+postbody+"','"+postsummary+"');\n"
+        //code for tags table insert
+        this.state["childTags"].forEach((tag)=>{
+            output+="INSERT INTO tags (postid,tag) VALUES ("+postID.toString()+",'"+tag+"');\n"
+        });
         return output;
     }
     submitForm(event){
@@ -131,6 +137,7 @@ export class FormContainer extends React.Component<any, any> {
                             <PosterResultBox data={this.state['childUID']} onChange={(value => this.setState({ childUID: value }))} type="poster" />
                             <DateInputBox data={this.state['childDate']} onChange={(value => this.setState({ childDate: value }))} type="date" />
                             <TitleInputBox data={this.state['childTitle']} onChange={(value => this.setState({ childTitle: value }))} type="title" />
+                            <InputBox data={this.state["childPostID"]} onChange={(value => this.setState({ childPostID: value }))} cols={100} rows={1} type="PostID" />
                             <InputBox data={this.state["childPost"]} onChange={(value => this.setState({ childPost: value }))} type="post" />
                             <TagsInputBox data={this.state['childTags']} onChange={(value => this.setState({ childTags: value }))} type="tags" />
                             <button onClick={this.calculateTags}>Calculate Tags</button>

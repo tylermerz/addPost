@@ -119,6 +119,6 @@ export default class autoSummarizer{
         this.summary = this.summary+"<figure>" + figures[0].innerHTML+"</figure>";
     }
     watermarkSummary(){
-        this.summary = this.summary + "<em> (Summarized by <a href='"+this.versionLink+"'>autoSummarizer "+this.version+"</a></em>)</p>";
+        this.summary = this.summary + '<em> (Summarized by <a href="'+this.versionLink+'">autoSummarizer '+this.version+'</a></em>)</p>';
     }
 }
